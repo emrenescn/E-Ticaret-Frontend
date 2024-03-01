@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsModule } from './products/products.module';
 import { BasketsModule } from './baskets/baskets.module';
 import { HomeModule } from './home/home.module';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -10,6 +11,7 @@ import { HomeModule } from './home/home.module';
   declarations: [],
   imports: [
     CommonModule,
+    RouterModule,
     ProductsModule,
     BasketsModule,
     HomeModule
