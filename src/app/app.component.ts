@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CustomToastrService, ToastrMessageType, ToastrPosition } from './services/ui/custom-toastr.service';
+
 
 @Component({
   selector: 'app-root',
@@ -8,13 +8,8 @@ import { CustomToastrService, ToastrMessageType, ToastrPosition } from './servic
 })
 export class AppComponent {
   title = 'ETicaretClient';
-  constructor(private toastr:CustomToastrService){
-    this.toastr.message("as","sa",{
-      messageType:ToastrMessageType.Info,
-      position:ToastrPosition.BottomFullWidth
-    });
-    
-   
+  constructor(){
+
   }
 
 }

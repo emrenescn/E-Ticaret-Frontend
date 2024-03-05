@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderComponent } from './order.component';
 import { RouterModule } from '@angular/router';
+
 
 
 
@@ -17,4 +18,6 @@ import { RouterModule } from '@angular/router';
   ],
   exports:[OrderComponent]
 })
-export class OrderModule { }
+export class OrderModule{ 
+ 
+}
