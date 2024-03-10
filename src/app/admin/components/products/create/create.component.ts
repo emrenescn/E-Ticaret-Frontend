@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from '../../../../base/base.component';
 import { AlertifyService, MessageType, Position } from '../../../../services/admin/alertify.service';
 
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -24,14 +25,20 @@ export class CreateComponent extends BaseComponent implements OnInit{
     create_product.stock=parseInt(stock.value);
     create_product.price=parseFloat(price.value);
     this.productService.create(create_product,()=>{
+      this.hideSpinner(SpinnerType.BallAtom);
       this.alertify.message("Ürün Başarıyla eklenmiştir",{
         dismissOther:true,
         messageType:MessageType.Success,
         position:Position.TopRight,
         delay:2
-
-      });
-      this.hideSpinner(SpinnerType.BallAtom)
+      });  
+    },errorMessage=>{
+      this.alertify.message(errorMessage,{
+        dismissOther:true,
+        messageType:MessageType.Error,
+        position:Position.TopRight,
+        delay:2
+      })
     });
   }
 
