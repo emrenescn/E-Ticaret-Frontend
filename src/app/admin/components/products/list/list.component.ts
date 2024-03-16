@@ -16,20 +16,27 @@ export class ListComponent extends BaseComponent implements OnInit{
   constructor(spinner:NgxSpinnerService,private productService:ProductService,private alertifyService:AlertifyService){
     super(spinner);
   }
-  displayedColumns: string[] = ['name', 'stock', 'price', 'createdDate','updatedDate'];
+  displayedColumns: string[] = ['name', 'stock', 'price', 'createdDate','updatedDate','edit','delete'];
   dataSource:MatTableDataSource<List_Product>=null;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  async ngOnInit() {
+  async getProducts(){
     this.showSpinner(SpinnerType.BallAtom);
-    const allProducts:List_Product[]= await this.productService.read(()=>this.hideSpinner(SpinnerType.BallAtom),errorMessage=>this.alertifyService
+    const allProducts:{totalCount:number;products:List_Product[]}= await this.productService.read(this.paginator? this.paginator.pageIndex:0,
+      this.paginator? this.paginator.pageSize:5,()=>this.hideSpinner(SpinnerType.BallAtom),errorMessage=>this.alertifyService
     .message(errorMessage,{
             dismissOther:true,
              messageType:MessageType.Error,
              position:Position.TopRight,
              delay:2
     }));
-    this.dataSource=new MatTableDataSource<List_Product>(allProducts);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource=new MatTableDataSource<List_Product>(allProducts.products);
+    this.paginator.length=allProducts.totalCount;
+  }
+  async pageChanged(){
+     await this.getProducts();
+  }
+  async ngOnInit() {
+    await this.getProducts();
   }
 
 }
