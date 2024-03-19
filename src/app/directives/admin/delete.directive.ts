@@ -47,6 +47,7 @@ export class DeleteDirective {
         })
       })
      },(errorResponse:HttpErrorResponse)=>{
+      this.spinnerService.hide(SpinnerType.BallAtom);
       this.alertifyService.message("Silme başarısız",{
         dismissOther:true,
         position:Position.TopRight,
