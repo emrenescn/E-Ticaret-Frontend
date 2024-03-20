@@ -6,6 +6,7 @@ import { DeleteDialogComponent, DeleteState } from '../../dialogs/delete-dialog/
 import { HttpClientService } from '../../services/common/http-client.service';
 import { AlertifyService, MessageType, Position } from '../../services/admin/alertify.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DialogService } from '../../services/common/dialog.service';
 declare var $:any;
 @Directive({
   selector: '[appDelete]'
@@ -13,7 +14,8 @@ declare var $:any;
 export class DeleteDirective {
 
   constructor(private element:ElementRef,private _renderer:Renderer2,private httpClientService:HttpClientService,
-    private spinnerService:NgxSpinnerService,public dialog: MatDialog,private alertifyService:AlertifyService) { 
+    private spinnerService:NgxSpinnerService,public dialog: MatDialog,private alertifyService:AlertifyService,
+    private dialogService:DialogService) { 
     const img=_renderer.createElement("img");
     img.setAttribute("src","../../../../../assets/delete.png");
     img.setAttribute("style","cursor:pointer;");
@@ -27,46 +29,41 @@ export class DeleteDirective {
   @Output() callBack:EventEmitter<any>=new EventEmitter();
   @HostListener("click")
   async onClick(){
-    this.openDialog(async()=>{
-      this.spinnerService.show(SpinnerType.BallAtom);
-      const td:HTMLTableCellElement=this.element.nativeElement;
-     await this.httpClientService.delete({
-      controller:this.controller
-     },this.id).subscribe(data=>{
-      $(td.parentElement).animate({
-        opacity:0,
-        left:"+=50",
-        height:"toogle"
-      },700,()=>{
-        this.callBack.emit();
-        this.alertifyService.message("Silme işlemi başarılı",{
-          messageType:MessageType.Success,
-          position:Position.TopRight,
+    this.dialogService.openDialog({
+      componentType:DeleteDialogComponent,
+      data:DeleteState.Yes,
+      afterClosed:async()=>{
+        this.spinnerService.show(SpinnerType.BallAtom);
+        const td:HTMLTableCellElement=this.element.nativeElement;
+       await this.httpClientService.delete({
+        controller:this.controller
+       },this.id).subscribe(data=>{
+        $(td.parentElement).animate({
+          opacity:0,
+          left:"+=50",
+          height:"toogle"
+        },700,()=>{
+          this.callBack.emit();
+          this.alertifyService.message("Silme işlemi başarılı",{
+            messageType:MessageType.Success,
+            position:Position.TopRight,
+            dismissOther:true,
+            delay:2
+          })
+        })
+       },(errorResponse:HttpErrorResponse)=>{
+        this.spinnerService.hide(SpinnerType.BallAtom);
+        this.alertifyService.message("Silme başarısız",{
           dismissOther:true,
+          position:Position.TopRight,
+          messageType:MessageType.Error,
           delay:2
         })
-      })
-     },(errorResponse:HttpErrorResponse)=>{
-      this.spinnerService.hide(SpinnerType.BallAtom);
-      this.alertifyService.message("Silme başarısız",{
-        dismissOther:true,
-        position:Position.TopRight,
-        messageType:MessageType.Error,
-        delay:2
-      })
-     })
+       })
+      }
+     
     })
   }
 
-  openDialog(afterClosed:any): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      width:'250px',
-      data:DeleteState.Yes
-    });
-    dialogRef.afterClosed().subscribe(result => {
-     if(result==DeleteState.Yes){
-      afterClosed();
-     }
-    });
-  }
+
 }
