@@ -60,6 +60,7 @@ export class FileUploadComponent {
              })
           }
         },(errorResponse)=>{
+          this.spinner.hide(SpinnerType.BallAtom);
           const errorFileUploadMessage:string="Dosya  yüklenemedi";
           
           if(this.options.isAdminPage){
@@ -76,6 +77,7 @@ export class FileUploadComponent {
             messageType:ToastrMessageType.Error
            })
           }
+
         });
       }
       
