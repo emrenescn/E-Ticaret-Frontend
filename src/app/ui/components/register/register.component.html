@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+        <div class="form-group">
+            <label for="nameSurname" class="form-label">Ad Soyad</label>
+            <input  formControlName="nameSurname"  type="text" class="form-control" id="nameSurname" placeholder="Ad Soyad" [ngClass]=
+            "{'is-invalid':submitted && component.nameSurname.errors}">
+            <small id="emailHelp" class="form-text text-muted" 
+             *ngIf="submitted && component.nameSurname.errors?.required">Lütfen Ad Soyad Alanını Boş Geçmeyiniz</small>
+             <small id="emailHelp" class="form-text text-muted" 
+             *ngIf="submitted && (component.nameSurname.errors?.maxlength||component.nameSurname.errors?.minlength)">
+              Lütfen Ad Soyad Alanını 3-50 karakter arasında doldurunuz</small>
+          </div>
+        <div class="form-group">
+            <label for="userName" class="form-label">Kullanıcı Adı</label>
+            <input formControlName="userName" type="text" class="form-control" id="userName" placeholder="Kullanıcı Adı"[ngClass]=
+            "{'is-invalid':submitted && component.userName.errors}">
+            <small id="emailHelp" class="form-text text-muted" 
+             *ngIf="submitted && component.userName.errors?.required">Lütfen Kullanıcı Adı Alanını Boş Geçmeyiniz</small>
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <input formControlName="email" type="email" class="form-control"  placeholder="Email" id="email" [ngClass]=
+            "{'is-invalid':submitted && component.email.errors}">
+            <small id="emailHelp" class="form-text text-muted" 
+             *ngIf="submitted && component.email.errors?.required">Lütfen Email Alanını Boş Geçmeyiniz</small>
+             <small id="emailHelp" class="form-text text-muted" 
+             *ngIf="submitted && component.email.errors?.email">Lütfen Email Alanını Düzgün Giriniz</small>
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Şİfre</label>
+            <input formControlName="password" type="password" class="form-control"  placeholder="Şİfre" id="password" [ngClass]=
+            "{'is-invalid':submitted && component.password.errors}">
+            <small id="emailHelp" class="form-text text-muted" 
+             *ngIf="submitted && component.password.errors?.required">Lütfen Şİfre Alanını Boş Geçmeyiniz</small>
+          </div>
+          <div class="form-group">
+            <label for="passwordConfirm" class="form-label">Şİfre Tekrarı</label>
+            <input formControlName="passwordConfirm" type="password" class="form-control"  placeholder="Şİfre Tekrarı" id="passwordConfirm"
+            [ngClass]=
+            "{'is-invalid':submitted && component.passwordConfirm.errors}">
+            <small id="emailHelp" *ngIf="submitted && frm.hasError('notSame')">Şİfre Tekrarı Hatalı</small>
+          </div>
+          <br/>
+          <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
