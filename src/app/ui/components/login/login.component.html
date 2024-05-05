@@ -13,8 +13,11 @@
             <small  class="form-text text-muted" 
              >Lütfen Şİfre Alanını Boş Geçmeyiniz</small>
           </div>
+          <asl-google-signin-button></asl-google-signin-button>
+          <img src="../../../assets/facebookicon.png" style="width:30px;height: 30px;cursor: pointer;" (click)="facebookLogin()">
           <br/>
           <button type="submit" class="btn btn-primary" (click)="login(txtUserNameOrEmail.value,txtPassword.value)">Giriş Yap</button>
+          
     </div>
     <div class="col-md-3"></div>
 </div>
