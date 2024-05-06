@@ -22,16 +22,18 @@ constructor(spinner:NgxSpinnerService,private userService:UserService,private au
     switch(user.provider){
       case "GOOGLE":
         await this.userService.googleLogin(user,()=>{
+          this.authService.identityCheck();
+         this.hideSpinner(SpinnerType.BallAtom);
         });
         break;
         case "FACEBOOK":
         await this.userService.facebookLogin(user,()=>{
+          this.authService.identityCheck();
+        this.hideSpinner(SpinnerType.BallAtom);
         });
         break;
     }
   })
-  this.authService.identityCheck();
-  this.hideSpinner(SpinnerType.BallAtom);
 }
   ngOnInit() {
   }
