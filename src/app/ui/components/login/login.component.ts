@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../services/common/models/user.service';
 import { BaseComponent, SpinnerType } from '../../../base/base.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../../../services/common/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FacebookLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { UserAuthService } from '../../../services/common/models/user-auth.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { FacebookLoginProvider, SocialAuthService, SocialUser } from '@abacritt/
   styleUrl: './login.component.scss'
 })
 export class LoginComponent extends BaseComponent implements OnInit{
-constructor(spinner:NgxSpinnerService,private userService:UserService,private authService:AuthService
+constructor(spinner:NgxSpinnerService,private userAuthService:UserAuthService,private authService:AuthService
   ,private activatedRoute:ActivatedRoute,private router:Router,private socialAuthService:SocialAuthService){
   super(spinner);
   this.socialAuthService.authState.subscribe(async (user:SocialUser)=>{
@@ -21,13 +21,13 @@ constructor(spinner:NgxSpinnerService,private userService:UserService,private au
     this.showSpinner(SpinnerType.BallAtom);
     switch(user.provider){
       case "GOOGLE":
-        await this.userService.googleLogin(user,()=>{
+        await this.userAuthService.googleLogin(user,()=>{
           this.authService.identityCheck();
          this.hideSpinner(SpinnerType.BallAtom);
         });
         break;
         case "FACEBOOK":
-        await this.userService.facebookLogin(user,()=>{
+        await this.userAuthService.facebookLogin(user,()=>{
           this.authService.identityCheck();
         this.hideSpinner(SpinnerType.BallAtom);
         });
@@ -41,7 +41,7 @@ constructor(spinner:NgxSpinnerService,private userService:UserService,private au
   async login(userNameOrEmail:string,password:string)
   {
     this.showSpinner(SpinnerType.BallAtom);
-   await  this.userService.login(userNameOrEmail,password,()=>{
+   await  this.userAuthService.login(userNameOrEmail,password,()=>{
     this.authService.identityCheck();
     this.activatedRoute.queryParams.subscribe(params=>{
       const returnUrl:string=params["returnUrl"];
